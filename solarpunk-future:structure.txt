@@ -1,0 +1,12 @@
+solarpunk-future/
+├── src/
+│   ├── App.jsx        #
+│   ├── main.jsx       # 
+│   └── index.css      # 
+├── index.html
+├── package.json
+├── vite.config.js
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+└── postcss.config.js  # For Tailwind CSS
