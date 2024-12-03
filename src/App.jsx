@@ -11,7 +11,6 @@ const ARView = () => {
     landscape: false
   });
 
-  // Updated placeholder images with public folder paths
   const placeholderImages = [
     '/solarpunk-future/images/placeholder-1.png',
     '/solarpunk-future/images/placeholder-2.jpg',
@@ -31,14 +30,12 @@ const ARView = () => {
   };
 
   const toggleOption = (option) => {
-    // Toggle the selected option
     const newOptions = selectedOptions.includes(option)
       ? selectedOptions.filter(item => item !== option)
       : [...selectedOptions, option];
     
     setSelectedOptions(newOptions);
 
-    // Update custom overlays
     setCustomOverlays(prev => ({
       ...prev,
       [option]: !prev[option]
@@ -46,7 +43,6 @@ const ARView = () => {
   };
 
   const handleImageSelect = (index) => {
-    // Only allow selection of the first placeholder image
     if (index === 0) {
       setSelectedImage(index);
     } else {
@@ -70,7 +66,7 @@ const ARView = () => {
         <div className="flex">
           <div className="w-3/4 pr-8 relative">
             {isLoading ? (
-              <div className="bg-gray-200 h-96 rounded-lg flex items-center justify-center">
+              <div className="bg-gray-200 h-128 rounded-lg flex items-center justify-center">
                 <p className="text-gray-600">Generating AI Visualization...</p>
               </div>
             ) : (
@@ -79,29 +75,29 @@ const ARView = () => {
                 <img 
                   src={placeholderImages[selectedImage]} 
                   alt={`Selected Placeholder ${selectedImage + 1}`}
-                  className="w-full h-96 object-cover rounded-lg"
+                  className="w-full h-128 object-cover rounded-lg"
                 />
 
-                {/* Overlay Highlights */}
+                {/* Overlay Highlights - Only show when overlays are selected */}
                 {Object.entries(customOverlays).map(([option, isActive]) => 
                   isActive ? (
                     <img
                       key={`highlight-${option}`}
                       src={highlightImages[`${option}-highlight`]}
                       alt={`${option} highlight`}
-                      className="absolute top-0 left-0 w-full h-96 object-cover opacity-50 rounded-lg pointer-events-none"
+                      className="absolute top-0 left-0 w-full h-128 object-cover opacity-50 rounded-lg pointer-events-none"
                     />
                   ) : null
                 )}
 
-                {/* Custom Modifications */}
+                {/* Custom Modifications - Replace overlays with custom images after generating */}
                 {Object.entries(customOverlays).map(([option, isActive]) => 
-                  isActive ? (
+                  isActive && !isLoading ? (
                     <img
                       key={`custom-${option}`}
                       src={customImages[option]}
                       alt={`${option} custom modification`}
-                      className="absolute top-0 left-0 w-full h-96 object-cover rounded-lg pointer-events-none"
+                      className="absolute top-0 left-0 w-full h-128 object-cover rounded-lg pointer-events-none"
                     />
                   ) : null
                 )}
@@ -153,6 +149,7 @@ const ARView = () => {
     </section>
   );
 };
+
 
 // Rest of the component remains the same as in the original file
 const Header = () => (
