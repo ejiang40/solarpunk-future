@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Camera } from 'lucide-react';
 
 // Import images using Vite's asset import
-import placeholder1 from '../assets/images/placeholder-1.jpg';
+import placeholder1 from '../assets/images/placeholder-1.png';
 import placeholder2 from '../assets/images/placeholder-2.jpg';
 import placeholder3 from '../assets/images/placeholder-3.jpg';
 
