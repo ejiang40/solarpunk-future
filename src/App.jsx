@@ -6,6 +6,11 @@ const ARView = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [generatedImage, setGeneratedImage] = useState(null);
+  const [highlights, setHighlights] = useState({
+    windows: false,
+    wall: false,
+    landscape: false
+  });
 
   // Placeholder images (using API placeholders)
   const placeholderImages = [
@@ -13,6 +18,13 @@ const ARView = () => {
     '/api/placeholder/350/250',
     '/api/placeholder/300/200'
   ];
+
+  // Highlight placeholder images
+  const highlightImages = {
+    'windows-highlight': '/api/placeholder/400/300',
+    'wall-highlight': '/api/placeholder/400/300',
+    'landscape-highlight': '/api/placeholder/400/300'
+  };
 
   // Simulated generated images based on selections
   const generatedImages = {
@@ -26,11 +38,27 @@ const ARView = () => {
   };
 
   const toggleOption = (option) => {
-    setSelectedOptions(prev => 
-      prev.includes(option) 
-        ? prev.filter(item => item !== option)
-        : [...prev, option]
-    );
+    // Toggle the selected option
+    const newOptions = selectedOptions.includes(option)
+      ? selectedOptions.filter(item => item !== option)
+      : [...selectedOptions, option];
+    
+    setSelectedOptions(newOptions);
+
+    // Update highlights
+    setHighlights(prev => ({
+      ...prev,
+      [option]: !prev[option]
+    }));
+  };
+
+  const handleImageSelect = (index) => {
+    // Only allow first placeholder to be selected
+    if (index === 0) {
+      setSelectedImage(index);
+    } else {
+      alert('Coming soon!');
+    }
   };
 
   const handleGenerate = () => {
@@ -49,7 +77,7 @@ const ARView = () => {
       <div className="container mx-auto text-center">
         <h2 className="text-3xl font-bold mb-8">AR Visualization Demo</h2>
         <div className="flex">
-          <div className="w-3/4 pr-8">
+          <div className="w-3/4 pr-8 relative">
             {isLoading ? (
               <div className="bg-gray-200 h-96 rounded-lg flex items-center justify-center">
                 <p className="text-gray-600">Generating AI Visualization...</p>
@@ -61,11 +89,24 @@ const ARView = () => {
                 className="w-full h-96 object-cover rounded-lg"
               />
             ) : selectedImage !== null ? (
-              <img 
-                src={placeholderImages[selectedImage]} 
-                alt={`Selected Placeholder ${selectedImage + 1}`}
-                className="w-full h-96 object-cover rounded-lg"
-              />
+              <div className="relative">
+                <img 
+                  src={placeholderImages[selectedImage]} 
+                  alt={`Selected Placeholder ${selectedImage + 1}`}
+                  className="w-full h-96 object-cover rounded-lg"
+                />
+                {/* Overlay highlights */}
+                {Object.entries(highlights).map(([option, isActive]) => 
+                  isActive ? (
+                    <img
+                      key={option}
+                      src={highlightImages[`${option}-highlight`]}
+                      alt={`${option} highlight`}
+                      className="absolute top-0 left-0 w-full h-96 object-cover opacity-50 rounded-lg"
+                    />
+                  ) : null
+                )}
+              </div>
             ) : (
               <div className="grid grid-cols-3 gap-4">
                 {placeholderImages.map((img, index) => (
@@ -73,8 +114,8 @@ const ARView = () => {
                     key={index} 
                     src={img} 
                     alt={`Placeholder ${index + 1}`}
-                    className="cursor-pointer hover:opacity-75 transition-opacity"
-                    onClick={() => setSelectedImage(index)}
+                    className={`${index === 0 ? 'cursor-pointer hover:opacity-75' : 'opacity-50'} transition-opacity`}
+                    onClick={() => handleImageSelect(index)}
                   />
                 ))}
               </div>
