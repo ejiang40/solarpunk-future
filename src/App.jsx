@@ -1,5 +1,112 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Camera } from 'lucide-react';
+
+const ARView = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [generatedImage, setGeneratedImage] = useState(null);
+
+  // Placeholder images (using API placeholders)
+  const placeholderImages = [
+    '/api/placeholder/400/300',
+    '/api/placeholder/350/250',
+    '/api/placeholder/300/200'
+  ];
+
+  // Simulated generated images based on selections
+  const generatedImages = {
+    'windows': '/api/placeholder/500/400',
+    'wall': '/api/placeholder/550/450',
+    'landscape': '/api/placeholder/600/500',
+    'windows-wall': '/api/placeholder/620/450',
+    'windows-landscape': '/api/placeholder/640/500',
+    'wall-landscape': '/api/placeholder/660/550',
+    'windows-wall-landscape': '/api/placeholder/680/600'
+  };
+
+  const toggleOption = (option) => {
+    setSelectedOptions(prev => 
+      prev.includes(option) 
+        ? prev.filter(item => item !== option)
+        : [...prev, option]
+    );
+  };
+
+  const handleGenerate = () => {
+    if (selectedOptions.length === 0) return;
+
+    setIsLoading(true);
+    setTimeout(() => {
+      const key = selectedOptions.sort().join('-');
+      setGeneratedImage(generatedImages[key] || generatedImages[selectedOptions[0]]);
+      setIsLoading(false);
+    }, 1500);
+  };
+
+  return (
+    <section id="ar" className="py-16 bg-gray-100">
+      <div className="container mx-auto text-center">
+        <h2 className="text-3xl font-bold mb-8">AR Visualization Demo</h2>
+        <div className="flex">
+          <div className="w-3/4 pr-8">
+            {isLoading ? (
+              <div className="bg-gray-200 h-96 rounded-lg flex items-center justify-center">
+                <p className="text-gray-600">Generating AI Visualization...</p>
+              </div>
+            ) : generatedImage ? (
+              <img 
+                src={generatedImage} 
+                alt="Generated AR Visualization" 
+                className="w-full h-96 object-cover rounded-lg"
+              />
+            ) : selectedImage !== null ? (
+              <img 
+                src={placeholderImages[selectedImage]} 
+                alt={`Selected Placeholder ${selectedImage + 1}`}
+                className="w-full h-96 object-cover rounded-lg"
+              />
+            ) : (
+              <div className="grid grid-cols-3 gap-4">
+                {placeholderImages.map((img, index) => (
+                  <img 
+                    key={index} 
+                    src={img} 
+                    alt={`Placeholder ${index + 1}`}
+                    className="cursor-pointer hover:opacity-75 transition-opacity"
+                    onClick={() => setSelectedImage(index)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="w-1/4 space-y-4">
+            {['windows', 'wall', 'landscape'].map((option) => (
+              <button
+                key={option}
+                onClick={() => toggleOption(option)}
+                className={`w-full py-2 rounded-lg transition-colors ${
+                  selectedOptions.includes(option)
+                    ? 'bg-green-500 text-white'
+                    : 'bg-gray-200 text-gray-700'
+                }`}
+              >
+                {option.charAt(0).toUpperCase() + option.slice(1)}
+              </button>
+            ))}
+            <button
+              onClick={handleGenerate}
+              disabled={selectedOptions.length === 0 || selectedImage === null}
+              className="w-full py-2 rounded-lg bg-blue-500 text-white disabled:bg-gray-400"
+            >
+              Generate
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const Header = () => (
   <header className="bg-green-800 text-white p-4">
@@ -7,7 +114,7 @@ const Header = () => (
       <h1 className="text-2xl font-bold">A Vision Into a Solarpunk Future</h1>
       <nav className="space-x-4">
         <a href="#about" className="hover:text-green-200">About</a>
-        <a href="#ar" className="hover:text-green-200">AR View</a>
+        <a href="#ar" className="hover:text-green-200">Demo Example</a>
         <a href="#principles" className="hover:text-green-200">Philosophy</a>
         <a href="#team" className="hover:text-green-200">Team</a>
       </nav>
@@ -59,17 +166,17 @@ const Team = () => {
     {
       name: 'Tanner Lamar',
       role: 'Communication & Framework Lead',
-      description: 'Website framework, background research, and documentation//placeholder'
+      description: 'Website framework, background research, documentation & philosophy head'
     },
     {
       name: 'Leon Li',
       role: 'AI Lead',
-      description: 'ChatGPT token and API key implementation//placeholder'
+      description: 'AI Implementation / Image Modification'
     },
     {
       name: 'Edwin Jiang',
       role: 'Implementation Lead',
-      description: 'Program implementation and development//placeholder'
+      description: 'Website framework'
     }
   ];
 
@@ -91,24 +198,13 @@ const Team = () => {
   );
 };
 
-const ARPlaceholder = () => (
-  <section id="ar" className="py-16 bg-gray-100">
-    <div className="container mx-auto text-center">
-      <h2 className="text-3xl font-bold mb-8">AR Visualization</h2>
-      <div className="bg-gray-200 h-96 rounded-lg flex items-center justify-center">
-        <p className="text-gray-600">AR View Coming Soon</p>
-      </div>
-    </div>
-  </section>
-);
-
 const App = () => {
   return (
     <div className="min-h-screen">
       <Header />
       <Hero />
       <Principles />
-      <ARPlaceholder />
+      <ARView />
       <Team />
     </div>
   );
