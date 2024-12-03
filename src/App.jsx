@@ -1,21 +1,6 @@
 import React, { useState } from 'react';
 import { Camera } from 'lucide-react';
 
-// Import images using Vite's asset import
-import placeholder1 from '../assets/images/placeholder-1.png';
-import placeholder2 from '../assets/images/placeholder-2.jpg';
-import placeholder3 from '../assets/images/placeholder-3.jpg';
-
-// Import overlay images
-import WindowsOverlay from '../assets/images/WindowsOverlay.png';
-import WallOverlay from '../assets/images/WallOverlay.png';
-import LandscapeOverlay from '../assets/images/LandscapeOverlay.png';
-
-// Import custom modification images
-import WindowsCustom from '../assets/images/WindowsCustom.png';
-import WallsCustom from '../assets/images/WallsCustom.png';
-import LandscapeCustom from '../assets/images/LandscapeCustom.png';
-
 const ARView = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -26,25 +11,25 @@ const ARView = () => {
     landscape: false
   });
 
-  // Updated placeholder images with imported files
+  // Updated placeholder images with public folder paths
   const placeholderImages = [
-    placeholder1,
-    placeholder2,
-    placeholder3
+    '/images/placeholder-1.jpg',
+    '/images/placeholder-2.jpg',
+    '/images/placeholder-3.jpg'
   ];
 
   // Updated overlay images
   const highlightImages = {
-    'windows-highlight': WindowsOverlay,
-    'wall-highlight': WallOverlay,
-    'landscape-highlight': LandscapeOverlay
+    'windows-highlight': '/images/WindowsOverlay.png',
+    'wall-highlight': '/images/WallOverlay.png',
+    'landscape-highlight': '/images/LandscapeOverlay.png'
   };
 
   // Updated custom modification images
   const customImages = {
-    'windows': WindowsCustom,
-    'wall': WallsCustom,
-    'landscape': LandscapeCustom
+    'windows': '/images/WindowsCustom.png',
+    'wall': '/images/WallsCustom.png',
+    'landscape': '/images/LandscapeCustom.png'
   };
 
   const toggleOption = (option) => {
