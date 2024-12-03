@@ -13,7 +13,7 @@ const ARView = () => {
 
   // Updated placeholder images with public folder paths
   const placeholderImages = [
-    '/images/placeholder-1.jpg',
+    '/images/placeholder-1.png',
     '/images/placeholder-2.jpg',
     '/images/placeholder-3.jpg'
   ];
