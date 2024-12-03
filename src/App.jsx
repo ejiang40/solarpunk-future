@@ -13,23 +13,21 @@ const ARView = () => {
 
   // Updated placeholder images with public folder paths
   const placeholderImages = [
-    `${process.env.PUBLIC_URL}/images/placeholder-1.png`,
-    `${process.env.PUBLIC_URL}/images/placeholder-2.jpg`,
-    `${process.env.PUBLIC_URL}/images/placeholder-3.png`
+    '/solarpunk-future/images/placeholder-1.png',
+    '/solarpunk-future/images/placeholder-2.jpg',
+    '/solarpunk-future/images/placeholder-3.png'
   ];
 
-  // Highlight images
   const highlightImages = {
-    'windows-highlight': `${process.env.PUBLIC_URL}/images/WindowsOverlay.png`,
-    'wall-highlight': `${process.env.PUBLIC_URL}/images/WallOverlay.png`,
-    'landscape-highlight': `${process.env.PUBLIC_URL}/images/LandscapeOverlay.png`
+    'windows-highlight': '/solarpunk-future/images/WindowsOverlay.png',
+    'wall-highlight': '/solarpunk-future/images/WallOverlay.png',
+    'landscape-highlight': '/solarpunk-future/images/LandscapeOverlay.png'
   };
 
-  // Custom images
   const customImages = {
-    'windows': `${process.env.PUBLIC_URL}/images/WindowsCustom.png`,
-    'wall': `${process.env.PUBLIC_URL}/images/WallCustom.png`,
-    'landscape': `${process.env.PUBLIC_URL}/images/LandscapeCustom.png`
+    'windows': '/solarpunk-future/images/WindowsCustom.png',
+    'wall': '/solarpunk-future/images/WallCustom.png',
+    'landscape': '/solarpunk-future/images/LandscapeCustom.png'
   };
 
   const toggleOption = (option) => {
