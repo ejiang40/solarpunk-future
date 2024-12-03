@@ -1,40 +1,50 @@
 import React, { useState } from 'react';
 import { Camera } from 'lucide-react';
 
+// Import images
+import placeholder1 from './assets/images/placeholder-1.jpg';
+import placeholder2 from './assets/images/placeholder-2.jpg';
+import placeholder3 from './assets/images/placeholder-3.jpg';
+
+// Import overlay images
+import WindowsOverlay from './assets/images/WindowsOverlay.png';
+import WallOverlay from './assets/images/WallOverlay.png';
+import LandscapeOverlay from './assets/images/LandscapeOverlay.png';
+
+// Import custom modification images
+import WindowsCustom from './assets/images/WindowsCustom.png';
+import WallsCustom from './assets/images/WallsCustom.png';
+import LandscapeCustom from './assets/images/LandscapeCustom.png';
+
 const ARView = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [generatedImage, setGeneratedImage] = useState(null);
-  const [highlights, setHighlights] = useState({
+  const [customOverlays, setCustomOverlays] = useState({
     windows: false,
     wall: false,
     landscape: false
   });
 
-  // Placeholder images (using API placeholders)
+  // Updated placeholder images with imported files
   const placeholderImages = [
-    '/api/placeholder/400/300',
-    '/api/placeholder/350/250',
-    '/api/placeholder/300/200'
+    placeholder1,
+    placeholder2,
+    placeholder3
   ];
 
-  // Highlight placeholder images
+  // Updated overlay images
   const highlightImages = {
-    'windows-highlight': '/api/placeholder/400/300',
-    'wall-highlight': '/api/placeholder/400/300',
-    'landscape-highlight': '/api/placeholder/400/300'
+    'windows-highlight': WindowsOverlay,
+    'wall-highlight': WallOverlay,
+    'landscape-highlight': LandscapeOverlay
   };
 
-  // Simulated generated images based on selections
-  const generatedImages = {
-    'windows': '/api/placeholder/500/400',
-    'wall': '/api/placeholder/550/450',
-    'landscape': '/api/placeholder/600/500',
-    'windows-wall': '/api/placeholder/620/450',
-    'windows-landscape': '/api/placeholder/640/500',
-    'wall-landscape': '/api/placeholder/660/550',
-    'windows-wall-landscape': '/api/placeholder/680/600'
+  // Updated custom modification images
+  const customImages = {
+    'windows': WindowsCustom,
+    'wall': WallsCustom,
+    'landscape': LandscapeCustom
   };
 
   const toggleOption = (option) => {
@@ -45,20 +55,16 @@ const ARView = () => {
     
     setSelectedOptions(newOptions);
 
-    // Update highlights
-    setHighlights(prev => ({
+    // Update custom overlays
+    setCustomOverlays(prev => ({
       ...prev,
       [option]: !prev[option]
     }));
   };
 
   const handleImageSelect = (index) => {
-    // Only allow first placeholder to be selected
-    if (index === 0) {
-      setSelectedImage(index);
-    } else {
-      alert('Coming soon!');
-    }
+    // Always allow image selection
+    setSelectedImage(index);
   };
 
   const handleGenerate = () => {
@@ -66,8 +72,6 @@ const ARView = () => {
 
     setIsLoading(true);
     setTimeout(() => {
-      const key = selectedOptions.sort().join('-');
-      setGeneratedImage(generatedImages[key] || generatedImages[selectedOptions[0]]);
       setIsLoading(false);
     }, 1500);
   };
@@ -82,42 +86,38 @@ const ARView = () => {
               <div className="bg-gray-200 h-96 rounded-lg flex items-center justify-center">
                 <p className="text-gray-600">Generating AI Visualization...</p>
               </div>
-            ) : generatedImage ? (
-              <img 
-                src={generatedImage} 
-                alt="Generated AR Visualization" 
-                className="w-full h-96 object-cover rounded-lg"
-              />
-            ) : selectedImage !== null ? (
+            ) : (
               <div className="relative">
+                {/* Base Image */}
                 <img 
                   src={placeholderImages[selectedImage]} 
                   alt={`Selected Placeholder ${selectedImage + 1}`}
                   className="w-full h-96 object-cover rounded-lg"
                 />
-                {/* Overlay highlights */}
-                {Object.entries(highlights).map(([option, isActive]) => 
+
+                {/* Overlay Highlights */}
+                {Object.entries(customOverlays).map(([option, isActive]) => 
                   isActive ? (
                     <img
-                      key={option}
+                      key={`highlight-${option}`}
                       src={highlightImages[`${option}-highlight`]}
                       alt={`${option} highlight`}
-                      className="absolute top-0 left-0 w-full h-96 object-cover opacity-50 rounded-lg"
+                      className="absolute top-0 left-0 w-full h-96 object-cover opacity-50 rounded-lg pointer-events-none"
                     />
                   ) : null
                 )}
-              </div>
-            ) : (
-              <div className="grid grid-cols-3 gap-4">
-                {placeholderImages.map((img, index) => (
-                  <img 
-                    key={index} 
-                    src={img} 
-                    alt={`Placeholder ${index + 1}`}
-                    className={`${index === 0 ? 'cursor-pointer hover:opacity-75' : 'opacity-50'} transition-opacity`}
-                    onClick={() => handleImageSelect(index)}
-                  />
-                ))}
+
+                {/* Custom Modifications */}
+                {Object.entries(customOverlays).map(([option, isActive]) => 
+                  isActive ? (
+                    <img
+                      key={`custom-${option}`}
+                      src={customImages[option]}
+                      alt={`${option} custom modification`}
+                      className="absolute top-0 left-0 w-full h-96 object-cover rounded-lg pointer-events-none"
+                    />
+                  ) : null
+                )}
               </div>
             )}
           </div>
@@ -137,7 +137,7 @@ const ARView = () => {
             ))}
             <button
               onClick={handleGenerate}
-              disabled={selectedOptions.length === 0 || selectedImage === null}
+              disabled={selectedOptions.length === 0}
               className="w-full py-2 rounded-lg bg-blue-500 text-white disabled:bg-gray-400"
             >
               Generate
@@ -149,6 +149,7 @@ const ARView = () => {
   );
 };
 
+// Rest of the component remains the same as in the original file
 const Header = () => (
   <header className="bg-green-800 text-white p-4">
     <div className="container mx-auto flex justify-between items-center">
