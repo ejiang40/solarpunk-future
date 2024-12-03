@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { Camera } from 'lucide-react';
 
-// Import images
-import placeholder1 from './assets/images/placeholder-1.jpg';
-import placeholder2 from './assets/images/placeholder-2.jpg';
-import placeholder3 from './assets/images/placeholder-3.jpg';
+// Import images using Vite's asset import
+import placeholder1 from '../assets/images/placeholder-1.jpg';
+import placeholder2 from '../assets/images/placeholder-2.jpg';
+import placeholder3 from '../assets/images/placeholder-3.jpg';
 
 // Import overlay images
-import WindowsOverlay from './assets/images/WindowsOverlay.png';
-import WallOverlay from './assets/images/WallOverlay.png';
-import LandscapeOverlay from './assets/images/LandscapeOverlay.png';
+import WindowsOverlay from '../assets/images/WindowsOverlay.png';
+import WallOverlay from '../assets/images/WallOverlay.png';
+import LandscapeOverlay from '../assets/images/LandscapeOverlay.png';
 
 // Import custom modification images
-import WindowsCustom from './assets/images/WindowsCustom.png';
-import WallsCustom from './assets/images/WallsCustom.png';
-import LandscapeCustom from './assets/images/LandscapeCustom.png';
+import WindowsCustom from '../assets/images/WindowsCustom.png';
+import WallsCustom from '../assets/images/WallsCustom.png';
+import LandscapeCustom from '../assets/images/LandscapeCustom.png';
 
 const ARView = () => {
   const [selectedImage, setSelectedImage] = useState(0);
