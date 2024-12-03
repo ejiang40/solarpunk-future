@@ -13,23 +13,24 @@ const ARView = () => {
 
   // Updated placeholder images with public folder paths
   const placeholderImages = [
-  `${process.env.PUBLIC_URL}/images/placeholder-1.png`,
-  `${process.env.PUBLIC_URL}/images/placeholder-2.jpg`,
-  `${process.env.PUBLIC_URL}/images/placeholder-3.png`
-];
+    `${process.env.PUBLIC_URL}/images/placeholder-1.png`,
+    `${process.env.PUBLIC_URL}/images/placeholder-2.jpg`,
+    `${process.env.PUBLIC_URL}/images/placeholder-3.png`
+  ];
 
-const highlightImages = {
-  'windows-highlight': `${process.env.PUBLIC_URL}/images/WindowsOverlay.png`,
-  'wall-highlight': `${process.env.PUBLIC_URL}/images/WallOverlay.png`,
-  'landscape-highlight': `${process.env.PUBLIC_URL}/images/LandscapeOverlay.png`
-};
+  // Highlight images
+  const highlightImages = {
+    'windows-highlight': `${process.env.PUBLIC_URL}/images/WindowsOverlay.png`,
+    'wall-highlight': `${process.env.PUBLIC_URL}/images/WallOverlay.png`,
+    'landscape-highlight': `${process.env.PUBLIC_URL}/images/LandscapeOverlay.png`
+  };
 
-const customImages = {
-  'windows': `${process.env.PUBLIC_URL}/images/WindowsCustom.png`,
-  'wall': `${process.env.PUBLIC_URL}/images/WallCustom.png`,
-  'landscape': `${process.env.PUBLIC_URL}/images/LandscapeCustom.png`
-};
-
+  // Custom images
+  const customImages = {
+    'windows': `${process.env.PUBLIC_URL}/images/WindowsCustom.png`,
+    'wall': `${process.env.PUBLIC_URL}/images/WallCustom.png`,
+    'landscape': `${process.env.PUBLIC_URL}/images/LandscapeCustom.png`
+  };
 
   const toggleOption = (option) => {
     // Toggle the selected option
