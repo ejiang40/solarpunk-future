@@ -13,22 +13,22 @@ const ARView = () => {
 
   // Updated placeholder images with public folder paths
   const placeholderImages = [
-  'images/placeholder-1.png',
-  'images/placeholder-2.jpg',
-  'images/placeholder-3.png'
-];
+    'images/placeholder-1.png',
+    'images/placeholder-2.jpg',
+    'images/placeholder-3.png'
+  ];
 
-const highlightImages = {
-  'windows-highlight': 'images/WindowsOverlay.png',
-  'wall-highlight': 'images/WallOverlay.png',
-  'landscape-highlight': 'images/LandscapeOverlay.png'
-};
+  const highlightImages = {
+    'windows-highlight': 'images/WindowsOverlay.png',
+    'wall-highlight': 'images/WallOverlay.png',
+    'landscape-highlight': 'images/LandscapeOverlay.png'
+  };
 
-const customImages = {
-  'windows': 'images/WindowsCustom.png',
-  'wall': 'images/WallCustom.png',
-  'landscape': 'images/LandscapeCustom.png'
-};
+  const customImages = {
+    'windows': 'images/WindowsCustom.png',
+    'wall': 'images/WallCustom.png',
+    'landscape': 'images/LandscapeCustom.png'
+  };
 
   const toggleOption = (option) => {
     // Toggle the selected option
@@ -46,8 +46,12 @@ const customImages = {
   };
 
   const handleImageSelect = (index) => {
-    // Always allow image selection
-    setSelectedImage(index);
+    // Only allow selection of the first placeholder image
+    if (index === 0) {
+      setSelectedImage(index);
+    } else {
+      alert("Coming soon!");
+    }
   };
 
   const handleGenerate = () => {
@@ -118,6 +122,24 @@ const customImages = {
                 {option.charAt(0).toUpperCase() + option.slice(1)}
               </button>
             ))}
+            <button
+              onClick={handleImageSelect.bind(this, 0)}
+              className="w-full py-2 rounded-lg bg-blue-500 text-white"
+            >
+              View Placeholder 1
+            </button>
+            <button
+              onClick={handleImageSelect.bind(this, 1)}
+              className="w-full py-2 rounded-lg bg-gray-400 text-white"
+            >
+              View Placeholder 2 (Coming Soon)
+            </button>
+            <button
+              onClick={handleImageSelect.bind(this, 2)}
+              className="w-full py-2 rounded-lg bg-gray-400 text-white"
+            >
+              View Placeholder 3 (Coming Soon)
+            </button>
             <button
               onClick={handleGenerate}
               disabled={selectedOptions.length === 0}
