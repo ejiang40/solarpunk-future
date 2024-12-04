@@ -10,6 +10,7 @@ const ARView = () => {
     wall: false,
     landscape: false
   });
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const placeholderImages = [
     '/solarpunk-future/images/placeholder-1.png',
@@ -45,8 +46,6 @@ const ARView = () => {
   const handleImageSelect = (index) => {
     if (index === 0) {
       setSelectedImage(index);
-    } else {
-      alert("Coming soon!");
     }
   };
 
@@ -56,100 +55,125 @@ const ARView = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
+      setIsGenerating(true);
     }, 1500);
   };
+
+  const renderComingSoonOverlay = () => (
+    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-4 rounded-lg">
+        <p className="text-xl font-bold">Coming Soon!</p>
+      </div>
+    </div>
+  );
 
   return (
     <section id="ar" className="py-16 bg-gray-100">
       <div className="container mx-auto text-center">
         <h2 className="text-3xl font-bold mb-8">AR Visualization Demo</h2>
-        <div className="flex">
-          <div className="w-3/4 pr-8 relative">
-            {isLoading ? (
-              <div className="bg-gray-200 h-128 rounded-lg flex items-center justify-center">
-                <p className="text-gray-600">Generating AI Visualization...</p>
-              </div>
-            ) : (
-              <div className="relative">
-                {/* Base Image */}
-                <img 
-                  src={placeholderImages[selectedImage]} 
-                  alt={`Selected Placeholder ${selectedImage + 1}`}
-                  className="w-full h-128 object-cover rounded-lg"
-                />
-
-                {/* Overlay Highlights - Only show when overlays are selected */}
-                {Object.entries(customOverlays).map(([option, isActive]) => 
-                  isActive ? (
-                    <img
-                      key={`highlight-${option}`}
-                      src={highlightImages[`${option}-highlight`]}
-                      alt={`${option} highlight`}
-                      className="absolute top-0 left-0 w-full h-128 object-cover opacity-50 rounded-lg pointer-events-none"
-                    />
-                  ) : null
-                )}
-
-                {/* Custom Modifications - Replace overlays with custom images after generating */}
-                {Object.entries(customOverlays).map(([option, isActive]) => 
-                  isActive && !isLoading ? (
-                    <img
-                      key={`custom-${option}`}
-                      src={customImages[option]}
-                      alt={`${option} custom modification`}
-                      className="absolute top-0 left-0 w-full h-128 object-cover rounded-lg pointer-events-none"
-                    />
-                  ) : null
-                )}
-              </div>
-            )}
-          </div>
-          <div className="w-1/4 space-y-4">
-            {['windows', 'wall', 'landscape'].map((option) => (
-              <button
-                key={option}
-                onClick={() => toggleOption(option)}
-                className={`w-full py-2 rounded-lg transition-colors ${
-                  selectedOptions.includes(option)
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-200 text-gray-700'
-                }`}
+        <div className="flex flex-col">
+          <div className="flex justify-center space-x-4 mb-4">
+            {placeholderImages.map((image, index) => (
+              <div 
+                key={index} 
+                className="relative w-1/4 cursor-pointer"
+                onClick={() => index === 0 ? handleImageSelect(index) : null}
               >
-                {option.charAt(0).toUpperCase() + option.slice(1)}
-              </button>
+                <img 
+                  src={image} 
+                  alt={`Placeholder ${index + 1}`}
+                  className={`w-full h-64 object-cover rounded-lg ${
+                    index !== 0 ? 'opacity-50' : ''
+                  }`}
+                />
+                {index !== 0 && renderComingSoonOverlay()}
+              </div>
             ))}
-            <button
-              onClick={handleImageSelect.bind(this, 0)}
-              className="w-full py-2 rounded-lg bg-blue-500 text-white"
-            >
-              View Placeholder 1
-            </button>
-            <button
-              onClick={handleImageSelect.bind(this, 1)}
-              className="w-full py-2 rounded-lg bg-gray-400 text-white"
-            >
-              View Placeholder 2 (Coming Soon)
-            </button>
-            <button
-              onClick={handleImageSelect.bind(this, 2)}
-              className="w-full py-2 rounded-lg bg-gray-400 text-white"
-            >
-              View Placeholder 3 (Coming Soon)
-            </button>
-            <button
-              onClick={handleGenerate}
-              disabled={selectedOptions.length === 0}
-              className="w-full py-2 rounded-lg bg-blue-500 text-white disabled:bg-gray-400"
-            >
-              Generate
-            </button>
+          </div>
+
+          <div className="flex">
+            <div className="w-3/4 pr-8 relative">
+              {isLoading ? (
+                <div className="bg-gray-200 h-128 rounded-lg flex items-center justify-center">
+                  <p className="text-gray-600">Generating AI Visualization...</p>
+                </div>
+              ) : (
+                <div className="relative">
+                  {/* Base Image */}
+                  <img 
+                    src={placeholderImages[selectedImage]} 
+                    alt={`Selected Placeholder ${selectedImage + 1}`}
+                    className="w-full h-128 object-cover rounded-lg"
+                  />
+
+                  {/* Overlay Highlights - Only show when overlays are selected and not generating */}
+                  {!isGenerating && Object.entries(customOverlays).map(([option, isActive]) => 
+                    isActive ? (
+                      <img
+                        key={`highlight-${option}`}
+                        src={highlightImages[`${option}-highlight`]}
+                        alt={`${option} highlight`}
+                        className="absolute top-0 left-0 w-full h-128 object-cover opacity-50 rounded-lg pointer-events-none"
+                      />
+                    ) : null
+                  )}
+
+                  {/* Custom Modifications - Show only after generating */}
+                  {isGenerating && Object.entries(customOverlays).map(([option, isActive]) => 
+                    isActive ? (
+                      <img
+                        key={`custom-${option}`}
+                        src={customImages[option]}
+                        alt={`${option} custom modification`}
+                        className="absolute top-0 left-0 w-full h-128 object-cover rounded-lg pointer-events-none"
+                      />
+                    ) : null
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="w-1/4 space-y-4">
+              {['windows', 'wall', 'landscape'].map((option) => (
+                <button
+                  key={option}
+                  onClick={() => toggleOption(option)}
+                  className={`w-full py-2 rounded-lg transition-colors ${
+                    selectedOptions.includes(option)
+                      ? 'bg-green-500 text-white'
+                      : 'bg-gray-200 text-gray-700'
+                  }`}
+                >
+                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                </button>
+              ))}
+              <button
+                onClick={handleGenerate}
+                disabled={selectedOptions.length === 0}
+                className="w-full py-2 rounded-lg bg-blue-500 text-white disabled:bg-gray-400"
+              >
+                Generate
+              </button>
+              <button
+                onClick={() => {
+                  setIsGenerating(false);
+                  setSelectedOptions([]);
+                  setCustomOverlays({
+                    windows: false,
+                    wall: false,
+                    landscape: false
+                  });
+                }}
+                className="w-full py-2 rounded-lg bg-red-500 text-white"
+              >
+                Reset
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
 };
-
 
 // Rest of the component remains the same as in the original file
 const Header = () => (
