@@ -106,20 +106,22 @@ const ARView = () => {
                     className="w-full h-128 object-cover rounded-lg"
                   />
 
-                  {/* Overlay Highlights - Only show when overlays are selected and not generating */}
-                  {!isGenerating && Object.entries(customOverlays).map(([option, isActive]) => 
-                    isActive ? (
-                      <img
-                        key={`highlight-${option}`}
-                        src={highlightImages[`${option}-highlight`]}
-                        alt={`${option} highlight`}
-                        className="absolute top-0 left-0 w-full h-128 object-cover opacity-50 rounded-lg pointer-events-none"
-                      />
-                    ) : null
-                  )}
+                  {/* Overlay Highlights - Show when not generating or when regenerating options */}
+                  {(!isGenerating || (isGenerating && selectedOptions.length > 0)) && 
+                    Object.entries(customOverlays).map(([option, isActive]) => 
+                      isActive ? (
+                        <img
+                          key={`highlight-${option}`}
+                          src={highlightImages[`${option}-highlight`]}
+                          alt={`${option} highlight`}
+                          className="absolute top-0 left-0 w-full h-128 object-cover opacity-50 rounded-lg pointer-events-none"
+                        />
+                      ) : null
+                    )
+                  }
 
-                  {/* Custom Modifications - Show only after generating */}
-                  {isGenerating && Object.entries(customOverlays).map(([option, isActive]) => 
+                  {/* Custom Modifications - Show only after generating and when nothing selected */}
+                  {isGenerating && selectedOptions.length === 0 && Object.entries(customOverlays).map(([option, isActive]) => 
                     isActive ? (
                       <img
                         key={`custom-${option}`}
